@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const bodyparser = require('body-parser')
 //morgan logs all the requests
 const morgan = require('morgan')
 
@@ -8,6 +9,8 @@ const productRoutes = require('./api/routes/products')
 const orderRoutes = require('./api/routes/orders')
 
 app.use(morgan('dev'))
+app.use(bodyparser.urlencoded({extended : false}))
+app.use(bodyparser.json())
 
 app.use('/orders',orderRoutes)
 app.use('/products',productRoutes)
