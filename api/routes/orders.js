@@ -1,5 +1,5 @@
 const express = require('express')
-const routes = express.Router()
+const router = express.Router()
 
 router.get('/',(req,res,next)=>{
      res.status(200).json({
@@ -13,14 +13,14 @@ router.post('/',(req,res,next)=>{
     })
 })
 
-router.post('/orderId',(req,res,next)=>{
+router.get('/:orderId',(req,res,next)=>{
     res.status(200).json({
        message : "order details" ,
        orderId : req.params.orderId
     })
 })
 
-router.delete('/orderId',(req,res,next)=>{
+router.delete('/:orderId',(req,res,next)=>{
     res.status(200).json({
        message : "order deleted" ,
        orderId : req.params.orderId
