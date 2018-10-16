@@ -44,8 +44,16 @@ router.post('/',(req,res,next)=>{
     .then(result => {
         console.log(result)
         res.status(201).json({
-            message : "post req to /products",
-            createdProduct : result
+            message : "created product successfully",
+            createdProduct : {
+                name : result.name,
+                price : result.price,
+                _id : result._id,
+                request : {
+                    type : "GET",
+                    url :"http://localhost:3001/products/"+result._id
+                }
+            }
     })
     .catch(err => { console.log(err)
     res.status(500).json({
@@ -62,7 +70,13 @@ router.get('/:productId',(req,res,next)=> {
    .then(doc => {
        console.log('from db',doc)
        if(doc) {
-       res.status(200).json(doc)
+       res.status(200).json({
+           product :doc,
+           request : {
+               type : "GET",
+               url :"http://localhost:3001/products"
+           }
+        })
        } else {
            res.status(404).json({message : "no valid entry"})
        }
@@ -82,7 +96,13 @@ router.patch('/:productId',(req,res,next)=> {
   .exec()
   .then(result => {
       console.log(result)
-      res.status(200).json({result})
+      res.status(200).json({
+          message : "product updated",
+          request : {
+              type : "GET",
+              url : "https://localhost:3001/products/"+req.params.id
+          }
+      })
   })
   .catch(err => {
       console.log(err)
@@ -94,7 +114,14 @@ router.patch('/:productId',(req,res,next)=> {
    Product.remove({_id : req.params.productId})
    .exec()
    .then(result => {
-       res.status(200).json({result})
+       res.status(200).json({
+           message : "product deleted",
+          request : {
+              type : "POST",
+              url : 'http://localhost:3000/products',
+              body : {name : "String", price : "Number"}
+          } 
+       })
    })
    .catch(err => {
        console.log(err)
