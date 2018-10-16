@@ -9,25 +9,24 @@ const mongoose = require('mongoose')
 const productRoutes = require('./api/routes/products')
 const orderRoutes = require('./api/routes/orders')
 
-mongoose.connect('mongodb://localhost/node-shop')
+mongoose.connect('mongodb://localhost/node_shop')
 
 app.use(morgan('dev'))
 app.use(bodyparser.urlencoded({extended : false}))
 app.use(bodyparser.json())
 
-//cors
-app.use((req,res,next)=> {
-    res.header('Access-Control-Allow-Origin','*')
-    res.header('Access-Control-Allow-Headers','Origin,X-Requested-With,Content-Type,Accept,Authorization')
-
-    if(req.method === "OPTIONS") {
-        res.header('Access-Control-Allow-Methods','PUT,POST,PATCH,DELETE,GET')
-        return res.status(200).json({})
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    );
+    if (req.method === "OPTIONS") {
+      res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
+      return res.status(200).json({});
     }
-    
-    
-})
-
+    next();
+  });
 app.use('/orders',orderRoutes)
 app.use('/products',productRoutes)
 
