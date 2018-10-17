@@ -8,6 +8,7 @@ const mongoose = require('mongoose')
 
 const productRoutes = require('./api/routes/products')
 const orderRoutes = require('./api/routes/orders')
+const userRoutes = require('./api/routes/users')
 
 mongoose.connect('mongodb://localhost/node_shop')
 
@@ -30,7 +31,7 @@ app.use((req, res, next) => {
   });
 app.use('/orders',orderRoutes)
 app.use('/products',productRoutes)
-
+app.use('/users',userRoutes)
 app.use((req,res,next) => {
       const error = new Error('not found')
       error.status = 404
