@@ -12,6 +12,7 @@ const orderRoutes = require('./api/routes/orders')
 mongoose.connect('mongodb://localhost/node_shop')
 
 app.use(morgan('dev'))
+app.use('/uploads',express.static('uploads'))
 app.use(bodyparser.urlencoded({extended : false}))
 app.use(bodyparser.json())
 

@@ -32,7 +32,7 @@ fileFilter :fileFilter
 const Product = require('../models/product')
 
 router.get('/',(req,res,next)=>{
-   Product.find().select('name price _id').exec().then(docs => {
+   Product.find().select('name price _id productImage').exec().then(docs => {
        //console.log(docs)
        const response = {
            count : docs.length,
@@ -40,6 +40,7 @@ router.get('/',(req,res,next)=>{
                return {
                    name : doc.name,
                    price : doc.price,
+                   productImage : doc.productImage,
                    _id : doc.id,
                    request : {
                        type :'GET',
@@ -76,6 +77,7 @@ router.post('/',upload.single('productImage'),(req,res,next)=>{
                 name : result.name,
                 price : result.price,
                 _id : result._id,
+                productImage :req.file.path,
                 request : {
                     type : "GET",
                     url :"http://localhost:3001/products/"+result._id
