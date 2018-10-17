@@ -85,3 +85,48 @@ exports.product_get_product = (req,res,next)=> {
      })
  })
  }
+ 
+ exports.products_update_product = (req,res,next)=> {
+    const updateOps = {}
+    for (const ops of req.body) {
+        updateOps[ops.propName] = ops.value
+    }
+  Product.update({_id:req.params.productId},{$set:updateOps})
+  .exec()
+  .then(result => {
+      console.log(result)
+      res.status(200).json({
+          message : "product updated",
+          request : {
+              type : "GET",
+              url : "https://localhost:3001/products/"+req.params.id
+          }
+      })
+  })
+  .catch(err => {
+      console.log(err)
+      res.status(500).json({error:err})
+  })
+ }
+
+ exports.products_delete_product = (req,res,next)=> {
+    Product.remove({_id : req.params.productId})
+    .exec()
+    .then(result => {
+        res.status(200).json({
+            message : "product deleted",
+           request : {
+               type : "POST",
+               url : 'http://localhost:3000/products',
+               body : {name : "String", price : "Number"}
+           } 
+        })
+    })
+    .catch(err => {
+        console.log(err)
+        res.status(500).json({
+            error : err
+        })
+    })
+     
+    }
